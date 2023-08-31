@@ -1,0 +1,60 @@
+### base config ###
+full_field: &FULL_FIELD
+  loss: 'l2'
+  lr: 1E-3
+  num_data_workers: 4
+  dt: 1 # how many timesteps ahead the model will predict
+  n_history: 0 #how many previous timesteps to consider
+  prediction_type: 'iterative'
+  prediction_length: 41 #applicable only if prediction_type == 'iterative'
+  n_initial_conditions: 5 #applicable only if prediction_type == 'iterative'
+  ics_type: "default"
+  save_raw_forecasts: !!bool True
+  save_channel: !!bool False
+  masked_acc: !!bool False
+  maskpath: None
+  perturb: !!bool False
+  add_grid: !!bool False
+  N_grid_channels: 0
+  gridtype: 'sinusoidal' #options 'sinusoidal' or 'linear'
+  roll: !!bool False
+  #afno hyperparams
+  num_blocks: 8
+  nettype: 'afno'
+  width: 56
+  modes: 32
+  #options default, residual
+  target: 'default' 
+  normalization: 'zscore' #options zscore (minmax not supported) 
+  log_to_screen: !!bool True
+  save_checkpoint: !!bool True
+  enable_nhwc: !!bool False
+  optimizer_type: ''
+  crop_size_x: None
+  crop_size_y: None
+  two_step_training: !!bool False
+  plot_animations: !!bool False
+  add_noise: !!bool False
+  noise_std: 0
+
+afno_backbone: &backbone
+  <<: *FULL_FIELD
+  log_to_wandb: !!bool False
+  lr: 5E-4
+  patch_size: 9
+  batch_size: 32
+  max_epochs: 150
+  scheduler: 'ReduceLROnPlateau'
+  in_channels: [0]
+  out_channels: [0]
+  orography: !!bool False
+  orography_path: None 
+  exp_dir: '/home/mcsp/Downloads/FourCastNet/weight'
+  train_data_path: '/home/mcsp/Downloads/FourCastNet/data/train'
+  valid_data_path: '/home/mcsp/Downloads/FourCastNet/data/test'
+  inf_data_path:   '/home/mcsp/Downloads/FourCastNet/data/out_of_sample'
+  time_means_path:   '/home/mcsp/Downloads/FourCastNet/data/stats/time_means.npy'
+  global_means_path: '/home/mcsp/Downloads/FourCastNet/data/stats/global_means.npy'
+  global_stds_path:  '/home/mcsp/Downloads/FourCastNet/data/stats/global_stds.npy'
+
+
